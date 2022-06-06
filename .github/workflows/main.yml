@@ -1,3 +1,4 @@
+
 name: CI (Jira cloud example with GH action, report results to Test Plan - demo)
 on:
   workflow_dispatch:
@@ -28,8 +29,8 @@ jobs:
     - name: Submit results to Xray
       uses: mikepenz/xray-action@v0.9.4
       with:
-        username: ${{93A1FA732C024049A44722C0566CBA64}}
-        password: ${{9c5d9725b61b26d9eb6f3f14c26d74e9a85e3dce7d7349bcd3bfe429e2fce156}}
+        username: ${{ secrets.client_id }}
+        password: ${{ secrets.client_secret }}
         testFormat: "junit"
         testPaths: "**/surefire-reports/*.xml"
         projectKey: "XRAY"
