@@ -1,6 +1,6 @@
 name: 'xray-action'
 description: 'GitHub action to import test results into "Xray" - A complete Test Management tool for Jira.'
-author: 'Mike Penz'
+
 branding:
   icon: 'check-circle'  
   color: 'green'
