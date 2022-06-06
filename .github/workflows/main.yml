@@ -9,7 +9,7 @@ on:
  
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-2019
          
     steps:
     - uses: actions/checkout@v1
@@ -28,9 +28,9 @@ jobs:
     - name: Submit results to Xray
       uses: mikepenz/xray-action@v0.9.4
       with:
-        username: ${{ secrets.client_id }}
-        password: ${{ secrets.client_secret }}
+        username: ${{93A1FA732C024049A44722C0566CBA64}}
+        password: ${{9c5d9725b61b26d9eb6f3f14c26d74e9a85e3dce7d7349bcd3bfe429e2fce156}}
         testFormat: "junit"
         testPaths: "**/surefire-reports/*.xml"
-        projectKey: "CALC"
+        projectKey: "XRAY"
         testPlanKey: ${{ github.event.inputs.test_plan_key }}
