@@ -1,32 +1,37 @@
-name: CI (Jira cloud example with GH action, report results to Test Plan - demo)
-on:
-  workflow_dispatch:
-    inputs:
-      test_plan_key:
-        description: 'Test Plan issue key'
-        required: false
-        default: ''
- 
+name: Python application
+
+on: [push]
+
 jobs:
   build:
-    runs-on: ubuntu-latest
-         
+
+    runs-on: windows-latest
+
     steps:
-    - uses: actions/checkout@v1
-    - name: Set up Java
-      uses: actions/setup-java@v1
+    - uses: actions/checkout@v2
+    - run: |
+        git fetch --prune --unshallow
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v1
       with:
-        java-version: '1.8' 
-    - name: Cache Maven packages
-      uses: actions/cache@v2
-      with:
-        path: ~/.m2
-        key: ${{ runner.os }}-m2-${{ hashFiles('pom.xml') }}
-        restore-keys: ${{ runner.os }}-m2
-    - name: Build with Maven
-      run: mvn clean compile test --file pom.xml
+        python-version: 3.8
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Lint with flake8
+      run: |
+        pip install flake8
+        # stop the build if there are Python syntax errors or undefined names
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+    - name: Test with pytest
+      run: |
+        pip install pytest
+        export PYTHONPATH=src
+        pytest
     - name: Submit results to Xray
-      uses: mikepenz/xray-action@v0.9.4
       with:
         username: ${{ secrets.client_id }}
         password: ${{ secrets.client_secret }}
